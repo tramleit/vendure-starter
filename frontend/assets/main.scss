@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-family--primary: "Montserrat", sans-serif;
+  --font-family--secondary: "Montserrat", sans-serif;
+}
+
+@layer base {
+  html {
+    font-family: "Montserrat", sans-serif;
+  }
+}
+
+html {
+  width: auto;
+  @include for-mobile {
+    overflow-x: hidden;
+  }
+}
+body {
+  --font-family--primary: "Montserrat", sans-serif;
+  --font-family--secondary: "Montserrat", sans-serif;
+  --c-text: theme("colors.gray.800");
+  --c-dark-primary-base: theme("colors.gray.800");
+  overflow-x: hidden;
+  color: var(--c-text);
+  font-size: var(--font-size--base);
+  font-family: var(--font-family--primary);
+  font-weight: var(--font-weight-normal);
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  color: var(--c-link);
+  &:hover {
+    color: var(--c-link-hover);
+  }
+}
+h1 {
+  font-family: var(--font-family--primary);
+  font-size: var(--h1-font-size);
+  line-height: 1.6;
+  margin: 0;
+}
+h2 {
+  font-family: var(--font-family--primary);
+  font-size: var(--h2-font-size);
+  line-height: 1.6;
+  margin: 0;
+}
+h3 {
+  font-family: var(--font-family--primary);
+  font-size: var(--h3-font-size);
+  line-height: 1.6;
+  margin: 0;
+}
+h4 {
+  font-family: var(--font-family--primary);
+  font-size: var(--h4-font-size);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.sf-card {
+  @apply rounded;
+}
+.sf-button {
+  // @apply rounded;
+}
+.sf-product-card {
+  @apply rounded;
+  &__title {
+    white-space: unset;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+}

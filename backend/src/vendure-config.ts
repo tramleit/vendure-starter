@@ -7,10 +7,10 @@ import {
   LanguageCode,
   VendureConfig,
 } from "@vendure/core";
-import { defaultEmailHandlers, EmailPlugin } from "@vendure/email-plugin";
 import { compileUiExtensions } from "@vendure/ui-devkit/compiler";
 import "dotenv/config";
 import path from "path";
+import { customFields } from "./custom-fields-config";
 
 const IS_DEV = process.env.APP_ENV === "dev";
 
@@ -38,6 +38,7 @@ export const config: VendureConfig = {
   },
   authOptions: {
     tokenMethod: ["bearer", "cookie"],
+    requireVerification: false,
     superadminCredentials: {
       identifier: process.env.SUPERADMIN_USERNAME,
       password: process.env.SUPERADMIN_PASSWORD,
@@ -65,7 +66,7 @@ export const config: VendureConfig = {
   },
   // When adding or altering custom field definitions, the database will
   // need to be updated. See the "Migrations" section in README.md.
-  customFields: {},
+  customFields,
   plugins: [
     AssetServerPlugin.init({
       route: "assets",
@@ -73,22 +74,23 @@ export const config: VendureConfig = {
     }),
     DefaultJobQueuePlugin.init({ useDatabaseForBuffer: true }),
     DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: true }),
-    EmailPlugin.init({
-      devMode: true,
-      outputPath: path.join(__dirname, "../static/email/test-emails"),
-      route: "mailbox",
-      handlers: defaultEmailHandlers,
-      templatePath: path.join(__dirname, "../static/email/templates"),
-      globalTemplateVars: {
-        // The following variables will change depending on your storefront implementation.
-        // Here we are assuming a storefront running at http://localhost:8080.
-        fromAddress: '"example" <noreply@example.com>',
-        verifyEmailAddressUrl: "http://localhost:8080/verify",
-        passwordResetUrl: "http://localhost:8080/password-reset",
-        changeEmailAddressUrl:
-          "http://localhost:8080/verify-email-address-change",
-      },
-    }),
+    // TODO: Disable email plugin while verify flow not implement yet
+    // EmailPlugin.init({
+    //   devMode: true,
+    //   outputPath: path.join(__dirname, "../static/email/test-emails"),
+    //   route: "mailbox",
+    //   handlers: defaultEmailHandlers,
+    //   templatePath: path.join(__dirname, "../static/email/templates"),
+    //   globalTemplateVars: {
+    //     // The following variables will change depending on your storefront implementation.
+    //     // Here we are assuming a storefront running at http://localhost:8080.
+    //     fromAddress: '"example" <noreply@example.com>',
+    //     verifyEmailAddressUrl: "http://localhost:8080/verify",
+    //     passwordResetUrl: "http://localhost:8080/password-reset",
+    //     changeEmailAddressUrl:
+    //       "http://localhost:8080/verify-email-address-change",
+    //   },
+    // }),
     AdminUiPlugin.init({
       port: 3000,
       route: "admin",
