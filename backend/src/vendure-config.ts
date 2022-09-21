@@ -1,6 +1,10 @@
 import { AdminUiPlugin } from "@vendure/admin-ui-plugin";
-import { AssetServerPlugin } from "@vendure/asset-server-plugin";
 import {
+  AssetServerPlugin,
+  configureS3AssetStorage,
+} from "@vendure/asset-server-plugin";
+import {
+  DefaultAssetNamingStrategy,
   DefaultJobQueuePlugin,
   DefaultSearchPlugin,
   dummyPaymentHandler,
@@ -60,6 +64,7 @@ export const config: VendureConfig = {
     port: +process.env.DB_PORT,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
+    ...(!IS_DEV && { ssl: { rejectUnauthorized: false } }),
   },
   paymentOptions: {
     paymentMethodHandlers: [dummyPaymentHandler],
@@ -70,7 +75,15 @@ export const config: VendureConfig = {
   plugins: [
     AssetServerPlugin.init({
       route: "assets",
-      assetUploadDir: path.join(__dirname, "../static/assets"),
+      assetUploadDir: path.join(__dirname, "assets"),
+      namingStrategy: new DefaultAssetNamingStrategy(),
+      storageStrategyFactory: configureS3AssetStorage({
+        bucket: process.env.AWS_BUCKET + "",
+        credentials: {
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID + "",
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY + "",
+        },
+      }),
     }),
     DefaultJobQueuePlugin.init({ useDatabaseForBuffer: true }),
     DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: true }),
@@ -94,23 +107,25 @@ export const config: VendureConfig = {
     AdminUiPlugin.init({
       port: 3000,
       route: "admin",
-      app: compileUiExtensions({
-        outputPath: path.join(__dirname, "../admin-ui"),
-        extensions: [
-          {
-            translations: {
-              en: path.join(__dirname, "translations/en.json"),
-              vi: path.join(__dirname, "translations/vi.json"),
-            },
-            // globalStyles: path.join(__dirname, "theme/default.scss"),
-            // sassVariableOverrides: path.join(
-            //   __dirname,
-            //   "theme/_variables_default.scss"
-            // ),
-          },
-        ],
-        devMode: IS_DEV,
-      }),
+      app: IS_DEV
+        ? compileUiExtensions({
+            outputPath: path.join(__dirname, "../admin-ui"),
+            extensions: [
+              {
+                translations: {
+                  en: path.join(__dirname, "translations/en.json"),
+                  vi: path.join(__dirname, "translations/vi.json"),
+                },
+                // globalStyles: path.join(__dirname, "theme/default.scss"),
+                // sassVariableOverrides: path.join(
+                //   __dirname,
+                //   "theme/_variables_default.scss"
+                // ),
+              },
+            ],
+            devMode: IS_DEV,
+          })
+        : { path: "admin-ui/dist" },
       adminUiConfig: {
         defaultLanguage: LanguageCode.vi,
         defaultLocale: "vi",

@@ -6,8 +6,8 @@ compileUiExtensions({
   extensions: [
     {
       translations: {
-        en: path.join(__dirname, "src/translations/en.json"),
-        vi: path.join(__dirname, "src/translations/vi.json"),
+        en: path.join(__dirname, "src", "translations/en.json"),
+        vi: path.join(__dirname, "src", "translations/vi.json"),
       },
     },
   ],

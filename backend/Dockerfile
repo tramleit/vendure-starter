@@ -6,4 +6,5 @@ COPY package.json ./
 COPY yarn.lock ./
 RUN yarn
 COPY . .
+RUN yarn build-admin
 RUN yarn build

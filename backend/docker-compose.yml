@@ -1,39 +1,14 @@
 version: "3"
 services:
   server:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: congvan203/rychan-shop-vendure-be:latest
     ports:
       - 3000:3000
     command: ["yarn", "start:server"]
     volumes:
       - /usr/src/app
-    environment:
-      DB_HOST: database
-      DB_PORT: 5432
-      DB_NAME: vendure
-      DB_USERNAME: postgres
-      DB_PASSWORD: password
   worker:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: congvan203/rychan-shop-vendure-be:latest
     command: ["yarn", "start:worker"]
     volumes:
       - /usr/src/app
-    environment:
-      DB_HOST: database
-      DB_PORT: 5432
-      DB_NAME: vendure
-      DB_USERNAME: postgres
-      DB_PASSWORD: password
-  database:
-    image: postgres
-    volumes:
-      - /var/lib/postgresql/data
-    ports:
-      - 5432:5432
-    environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: vendure

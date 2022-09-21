@@ -5,10 +5,7 @@ export const initialData: InitialData = {
   defaultLanguage: LanguageCode.vi,
   defaultZone: "Asia",
   taxRates: [{ name: "VAT", percentage: 0 }],
-  shippingMethods: [
-    { name: "Giao hàng tiêu chuẩn", price: 0 },
-    { name: "Giao hàng nhanh", price: 0 },
-  ],
+  shippingMethods: [{ name: "Giao hàng tiêu chuẩn", price: 0 }],
   paymentMethods: [
     {
       name: "COD",
