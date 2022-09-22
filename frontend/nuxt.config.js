@@ -1,12 +1,14 @@
 import webpack from "webpack";
 import { getRoutes } from "./routes";
 import theme from "./themeConfig";
-
+console.log("host", process.env.HOST);
+console.log("port", process.env.PORT);
 export default {
   server: {
-    port: 3001,
-    host: "localhost",
+    port: process.env.PORT || 3001,
+    host: process.env.HOST || "0.0.0.0",
   },
+  buildDir: "dist",
   head: {
     title: "Vue Storefront",
     meta: [
