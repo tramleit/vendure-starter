@@ -6,7 +6,7 @@ console.log("port", process.env.PORT);
 export default {
   server: {
     port: process.env.PORT || 3001,
-    host: process.env.HOST || "localhost",
+    host: "localhost",
   },
   buildDir: "dist",
   head: {
