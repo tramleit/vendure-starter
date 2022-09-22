@@ -1,9 +1,10 @@
-FROM node:lts as builder
+FROM node:16 as builder
 
 WORKDIR /app
 
-COPY . .
+ENV NODE_ENV=production
 
+COPY package.json yarn.lock ./
 
 RUN yarn install \
     --prefer-offline \
@@ -11,23 +12,9 @@ RUN yarn install \
     --non-interactive \
     --production=false
 
+COPY . .
 RUN yarn build
+ENV NUXT_HOST=0.0.0.0
+ENV NUXT_PORT=3001
 
-RUN rm -rf node_modules && \
-    NODE_ENV=production yarn install \
-    --prefer-offline \
-    --pure-lockfile \
-    --non-interactive \
-    --production=true
-
-
-FROM node:lts
-WORKDIR /app
-COPY --from=builder /app  .
-
-ENV HOST 0.0.0.0
-ENV PORT 3001
-
-EXPOSE 3001
-
-CMD [ "yarn", "start", "--hostname", "0.0.0.0" ]
+CMD [ "yarn", "start" ]

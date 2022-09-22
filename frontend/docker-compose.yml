@@ -1,0 +1,10 @@
+version: "3"
+services:
+  storefront:
+    image: congvan203/rychan-shop-vendure-fe:dev
+    restart: always
+    ports:
+      - 3001:3001
+    volumes:
+      - /usr/src/app/fe
+    tty: true
