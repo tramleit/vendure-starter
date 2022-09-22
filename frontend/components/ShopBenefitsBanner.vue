@@ -1,5 +1,5 @@
 <template>
-  <div class="relative bg-gray-50 pb-22 my-10">
+  <div class="relative bg-gray-50 pb-24 my-10">
     <SfCallToAction
       title=""
       description=""

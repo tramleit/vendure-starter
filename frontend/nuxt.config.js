@@ -6,7 +6,7 @@ console.log("port", process.env.PORT);
 export default {
   server: {
     port: process.env.PORT || 3001,
-    host: process.env.HOST || "0.0.0.0",
+    host: process.env.HOST || "localhost",
   },
   buildDir: "dist",
   head: {
@@ -134,7 +134,7 @@ export default {
     babel: {
       plugins: [["@babel/plugin-proposal-private-property-in-object", { loose: true }]],
     },
-    transpile: ["vee-validate/dist/rules"],
+    transpile: ["vee-validate/dist/rules", /^@storefront-ui/],
     plugins: [
       new webpack.DefinePlugin({
         "process.VERSION": JSON.stringify({
